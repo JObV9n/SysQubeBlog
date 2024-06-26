@@ -11,9 +11,9 @@
 <body>
     <div id="app">
         <!-- Single Posts details component -->
-        <post-detail-component></post-detail>
+        <!-- <post-detail-component></post-detail> -->
         <!-- Regsiter Page Compoenet -->
-        <register-component></register-component>
+        <!-- <register-component></register-component> -->
     </div>
 </body>
 </html>

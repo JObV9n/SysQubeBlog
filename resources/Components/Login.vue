@@ -10,7 +10,9 @@
         <label>Password:</label>
         <input type="password" v-model="password" class="form-control" required>
       </div>
+      <p v-if="errorMessage" class="alert alert-danger p-2 m-3">{{ errorMessage }}</p>
       <button type="submit" class="btn btn-primary p-2 m-2 g-col-6">Login</button>
+      <router-link to="/register" class="a position-absolute bottom-40 start-50 m-3">Register</router-link> 
     </form>
   </div>
 </template>
@@ -22,12 +24,13 @@ export default {
   data() {
     return {
       email: '',
-      password: ''
+      password: '',
+      errorMessage:''
     };
   },
   methods: {
     login() {
-      axios.post('/login', {
+      axios.post('/api/login', {
         email: this.email,
         password: this.password
       })
@@ -36,7 +39,12 @@ export default {
           this.$router.push('/dashboard');
         })
         .catch(error => {
-          console.log(error);
+          if (error.response.status===401){
+            // console.log(error.response.data.message)
+
+            // console.log(error);
+            this.errorMessage = error.response.data.message;
+          }
         });
     }
   }

@@ -14,24 +14,14 @@ class PostController extends Controller
         $posts = Post::all();
         //not for the admin but for all the users
         return response()->json($posts);
-        // return view('dashboard', compact('posts'));
     }
 
-    public function landing()
+    public function show($id)
     {
-        $posts = Post::where('status', 'Published')->get();
-        return view('landing', compact('posts'));
+        $post = Post::where('id', $id)->firstOrFail();
+        // dd($post);
+        return response()->json(['post'=>$post]);
     }
-    // public function show($id)
-    // {
-    //     return Post::findOrFail($id);
-    // }
-
-    // public function show($slug)
-    // {
-    //     $post = Post::where('slug', $slug)->firstOrFail();
-    //     return view('post', compact('post'));
-    // }
 
     public function create()
     {
@@ -56,17 +46,10 @@ class PostController extends Controller
         }
 
         $post->save();
-
-        // return redirect()->route('posts.index');
         return response()->json(['message' => 'Post created successfully']);
     }
 
-    public function edit(Post $post)
-    {
-        return view('posts.edit', compact('post'));
-    }
-
-    public function update(Request $request, Post $post, $id)
+    public function update(Request $request, $id)
     {
         $post = Post::findOrFail($id);
 
@@ -75,10 +58,10 @@ class PostController extends Controller
             'slug' => 'required|unique:posts,slug,' . $post->id,
             'description' => 'required',
             'status' => 'required|in:Published,Draft',
-            'blog_image' => 'image|nullable'
+            'blog_image' => 'nullable|image|mimes:jpef,jpg,png,gif|max:2048'
         ]);
 
-        $post->fill($request->all());
+        $post->fill($request->except('blog_image'));
 
         if ($request->hasFile('blog_image')) {
             $path = $request->file('blog_image')->store('blog_images');
@@ -87,8 +70,7 @@ class PostController extends Controller
 
         $post->save();
 
-        // return redirect()->route('posts.index');
-        return response()->json(['message' => 'Post updated successfully']);
+        return response()->json(['message' => 'Post updated successfully','post'=>$post]);
     }
 
     // public function destroy(Post $post)
@@ -96,7 +78,7 @@ class PostController extends Controller
     {
         $post = Post::findOrFail($id);
         $post->delete();
-        // return redirect()->route('posts.index');
+   
         return response()->json(['message' => 'Post deleted successfully']);
     }
 

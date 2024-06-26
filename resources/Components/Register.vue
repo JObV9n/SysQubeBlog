@@ -41,7 +41,7 @@ export default {
         password_confirmation:this.password_confirmation
       })
         .then(response => {
-          alert(response.data.message)
+          alert(response.response.data.message)
           this.$router.push('/login');
         })
         .catch(error => {
