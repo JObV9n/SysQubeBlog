@@ -16,6 +16,9 @@ export default defineConfig({
             '@': path.resolve(__dirname, 'resources/js'),
         },
     },
+    build: {
+        outDir:'public/build/dist',
+    },
     server: {
         port: 3000 
     }
