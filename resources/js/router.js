@@ -12,7 +12,7 @@ const routes = [
     { path: '/register', component: Register },
     { path: '/dashboard', component: Dashboard, meta: { requiresAuth: true } },
     { path: '/dashboard/posts/create', component: PostForm, meta: { requiresAuth: true } },
-    { path: '/dashboard/posts/:id/edit', component: PostForm, meta: { requiresAuth: true } },
+    { path: '/dashboard/posts/edit/:id', component: PostForm, meta: { requiresAuth: true } },
     { path: '/posts/:id', component: PostDetail, name:'postDetails'},
 ];
 

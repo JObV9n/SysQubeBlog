@@ -20,12 +20,7 @@ class PostController extends Controller
     {
         $post = Post::where('id', $id)->firstOrFail();
         // dd($post);
-        return response()->json(['post'=>$post]);
-    }
-
-    public function create()
-    {
-        return view('posts.create');
+        return response()->json(['post' => $post]);
     }
 
     public function store(Request $request)
@@ -51,40 +46,55 @@ class PostController extends Controller
 
     public function update(Request $request, $id)
     {
-        $post = Post::findOrFail($id);
+        // $post = Post::findOrFail($id);
+        Log::info('Incoming request data:', $request->all());
 
+        $post = Post::where('id',$id)->firstOrFail();
+        
         $request->validate([
-            'title' => 'required',
-            'slug' => 'required|unique:posts,slug,' . $post->id,
-            'description' => 'required',
-            'status' => 'required|in:Published,Draft',
-            'blog_image' => 'nullable|image|mimes:jpef,jpg,png,gif|max:2048'
+            'title' =>'sometimes|string',
+            'slug' =>'sometimes|unique:posts,slug',
+            'description' => 'sometimes|string|',
+            'status' =>'in:Published,Draft',
+            'blog_image' =>'nullable|image|mimes:jpef,jpg,png,gif|max:2048'
         ]);
 
-        $post->fill($request->except('blog_image'));
+        // Update only post fields that are present/ filled
+
+        $post->title =$request->input('title');
+        $post->title =$request->input('slug');
+        $post->title =$request->input('description');
+        $post->title =$request->input('status');
 
         if ($request->hasFile('blog_image')) {
-            $path = $request->file('blog_image')->store('blog_images');
-            $post->blog_image = $path;
+            $post->blog_image = $request->input('blog_image');
+            // $post->blog_image = $path;
         }
 
+        //save the post inpyuts
         $post->save();
 
-        return response()->json(['message' => 'Post updated successfully','post'=>$post]);
+        return response()->json(['message' => 'Post updated successfully', 'post' => $post]);
     }
 
+    public function showPost($id)
+    {
+        $post = Post::findOrFail($id);
+        return response()->json($post);
+    }
     // public function destroy(Post $post)
     public function destroy($id)
     {
         $post = Post::findOrFail($id);
         $post->delete();
-   
+
         return response()->json(['message' => 'Post deleted successfully']);
     }
 
-    public function detail($id){
+    public function detail($id)
+    {
 
-        $post= Post::where('id',$id)->firstOrFail();
+        $post = Post::where('id', $id)->firstOrFail();
         return response()->json($post);
     }
 }

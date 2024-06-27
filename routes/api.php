@@ -12,7 +12,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/dashboard', [PostController::class, 'index']);
     Route::get('/dashboard/posts/{post}', [PostController::class, 'show']);
     Route::post('/dashboard/posts', [PostController::class, 'store']);
-    Route::put('/dashboard/posts/{post}/edit', [PostController::class, 'update']);
+    Route::put('/dashboard/posts/edit/{post}', [PostController::class, 'update']);
+    Route::get('/dashboard/posts/edit/{post}', [PostController::class, 'showPost']);
     
     Route::delete('/dashboard/posts/{post}', [PostController::class, 'destroy']);
 

@@ -7,14 +7,15 @@
     <div class="row">
       <div v-for="post in posts" :key="post.id" class="col-sm-4 mb-3">
         <div class="card">
-          <div class="card-body">
+          <div class="card-body post-container" >
             <h6 class="card-title">
               <router-link :to="'/dashboard/posts/' + post.id">{{ post.title }}</router-link>
               <p>{{ post.description }}</p>
+              <i>STATUS: {{ post.status }}</i>
             </h6>
-            <i>{{ post.status }}</i>
+            <img :src="post.blog_image" alt="post.slug" class="blog-image">
             <div class="button-group">
-              <router-link :to="'/dashboard/posts/' + post.id + '/edit'" class="btn btn-warning edit">Edit</router-link>
+              <router-link :to="'/dashboard/posts/'+'edit/'+ post.id " class="btn btn-warning edit">Edit</router-link>
               <button @click="deletePost(post.id)" class="btn btn-danger delete">Delete</button>
             </div>
           </div>
@@ -84,5 +85,13 @@ export default {
 .button-group .btn{
   /* margin-left: 5px; */
   margin-left: 1.8vh;
+}
+.post-container{
+  overflow: hidden;
+}
+.blog-image{
+  max-width: 90%;
+  height: auto;
+  display: block;
 }
 </style>
